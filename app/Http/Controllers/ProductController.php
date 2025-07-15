@@ -57,6 +57,7 @@ class ProductController extends Controller
             'catalog' => 'required|numeric',
             'vendor_code' => 'required',
             'img' => 'required',
+            'order' => 'required',
         ]);
 
         $data = $request->all();
@@ -70,6 +71,7 @@ class ProductController extends Controller
             $product->desc = $data['desc'];
             $product->catalog_id = intval($data['catalog']);
             $product->vendor_code = $data['vendor_code'];
+            $product->order = $data['order'];
             // if(isset($request->type)) {
                 $product->type = $request->type;
             // }

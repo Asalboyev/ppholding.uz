@@ -74,6 +74,10 @@
                                     <label for="email">Vendor code</label>
                                     <input type="text" class="form-control" name="vendor_code" placeholder="vendor code..." value="{{ old('vendor_code') }}">
                                 </div>
+                                <div class="mb-4">
+                                    <label for="email">Order</label>
+                                    <input type="text" class="form-control" name="order" placeholder="order..." value="{{ old('order') }}">
+                                </div>
                             </div>
                         </div>
                         <div class="row mb-4">

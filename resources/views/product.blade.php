@@ -34,7 +34,7 @@
         <div class="info">
             <div class="container">
                 <h2 class="info__title ro-bold">{{ isset($product->title[$lang]) ? $product->title[$lang] : $product->title['ru'] }}</h2>
-               
+
                 <p class="info__text">{!! isset($product->desc[$lang]) ? $product->desc[$lang] : $product->desc['ru'] !!}</p>
             </div>
         </div>
@@ -50,7 +50,8 @@
                                     <img src="{{ asset($product->main_img) }}" alt="">
                                 </div>
                                 <p class="product-card__title ro-bold">{{ isset($product->title[$lang]) ? $product->title[$lang] : $product->title['ru'] }}</p>
-                                
+                                <p class="info__text">{!! isset($product->desc[$lang]) ? $product->desc[$lang] : $product->desc['ru'] !!}</p>
+
                             </a>
                         </div>
                         @endforeach

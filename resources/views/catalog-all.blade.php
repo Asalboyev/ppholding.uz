@@ -21,6 +21,7 @@
                                 <div class="catalog-card__top-left">
                                     <p class="catalog-card__subtitle">{{ translation('products') }}</p>
                                     <p class="catalog-card__title ro-bold">{{ isset($item->title[$lang]) ? $item->title[$lang] : $item->title['ru'] }}</p>
+
                                 </div>
                                 <div class="catalo-card__logo">
                                     <svg width="37" height="30" viewBox="0 0 37 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,7 +34,7 @@
                             </div>
                             <p class="catalog-card__bg-text ro-bold">{{ isset($item->title[$lang]) ? $item->title[$lang] : $item->title['ru'] }}</p>
                             <a href="{{ route('catalog-inner', ['id' => $item->id]) }}" class="catalog-card__link">{{ count($item->products) }} {{ translation('copies') }}</a>
-                      
+
 </div>
                     @endforeach
                     {{--                    <div class="catalog-card">--}}
@@ -99,7 +100,7 @@
                                     <img src="{{ asset($product->main_img) }}" alt="">
                                 </div>
                                 <p class="product-card__title ro-bold">{{ isset($product->title[$lang]) ? $product->title[$lang] : $product->title['ru'] }}</p>
-                                
+
                             </a>
                         </div>
 

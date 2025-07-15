@@ -75,12 +75,21 @@ class WebController extends Controller
     public function catalogInner($id) {
         $catalog_for_footer = Catalog::take(5)->get();
         $catalog = Catalog::find($id);
+
+        if (!$catalog) {
+            abort(404, 'Catalog not found');
+        }
+
         $all = Catalog::orderBy('id', 'desc')->get()->except($id);
         $langs = Lang::all();
-        $products = Product::where('catalog_id', $catalog->id)->paginate(9);
+        $products = Product::where('catalog_id', $catalog->id)
+            ->orderByRaw('ISNULL(`order`), `order` ASC')
+            ->paginate(9);
+
         $translations = Translation::all();
         $lang = \App::getLocale();
         $products_count = count($catalog->products) >= 9 ? 9 : count($catalog->products);
+
         return view('catalog-inner', compact([
             'langs',
             'translations',
@@ -92,6 +101,7 @@ class WebController extends Controller
             'catalog_for_footer',
         ]));
     }
+
 
     public function catalogAll($id) {
         $catalog_for_footer = Catalog::take(5)->get();
@@ -163,7 +173,12 @@ class WebController extends Controller
         $translations = Translation::all();
         $lang = \App::getLocale();
         $product = Product::find($id);
-        $other = Product::where('catalog_id', $product->catalog_id)->get()->except($id);
+
+        $other = Product::where('catalog_id', $product->catalog_id)
+            ->where('id', '!=', $id)
+            ->orderBy('order', 'asc')
+            ->get();
+
         return view('product', compact([
             'langs',
             'translations',
@@ -173,6 +188,7 @@ class WebController extends Controller
             'catalog_for_footer',
         ]));
     }
+
 
     public function contacts() {
         $langs = Lang::all();
@@ -270,8 +286,15 @@ class WebController extends Controller
         $lang = \App::getLocale();
         $all = Catalog::orderBy('id', 'desc')->get()->except(4);
         $catalog_for_footer = Catalog::take(5)->get();
-        $products = Product::where('catalog_id', 4)->where('type', $type)->get();
+
+        $products = Product::where('catalog_id', 4)
+            ->where('type', $type)
+            ->orderBy('order', 'asc')
+            ->get();
+
         $catalog = Catalog::find(4);
+
         return view('capsules', compact('all', 'catalog', 'langs', 'lang', 'translations', 'catalog_for_footer', 'products'));
     }
+
 }
