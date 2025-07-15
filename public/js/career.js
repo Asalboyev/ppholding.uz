@@ -1,0 +1,1 @@
+function uploadFile(e){document.getElementById("file-name").innerHTML=e.target.files[0].name}document.getElementById("file").addEventListener("change",uploadFile);

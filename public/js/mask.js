@@ -1,0 +1,1 @@
+const element=document.getElementById("mask"),maskOptions={mask:"{+998}(00) 000-00-00"},mask=IMask(element,maskOptions);element.addEventListener("focus",(function(){mask.updateOptions({lazy:!1})}),!0),element.addEventListener("blur",(function(){mask.value||mask.updateOptions({lazy:!0})}),!0);
