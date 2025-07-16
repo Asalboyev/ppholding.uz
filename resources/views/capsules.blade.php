@@ -33,7 +33,7 @@
                             </div>
                             <p class="catalog-card__bg-text ro-bold">{{ isset($item->title[$lang]) ? $item->title[$lang] : $item->title['ru'] }}</p>
                             <a href="{{ route('catalog-inner', ['id' => $item->id]) }}" class="catalog-card__link">{{ count($item->products) }} {{ translation('copies') }}</a>
-                      
+
 </div>
                     @endforeach
 
@@ -63,7 +63,7 @@
                                     <img src="{{ asset($product->main_img) }}" alt="">
                                 </div>
                                 <p class="product-card__title ro-bold">{{ isset($product->title[$lang]) ? $product->title[$lang] : $product->title['ru'] }}</p>
-                                <p class="product-card__subtitle">{{ translation('vendor_code') }} {{ $product->vendor_code }}</p>
+                                <p class="info__text">{!! isset($product->desc[$lang]) ? $product->desc[$lang] : $product->desc['ru'] !!}</p>
                             </a>
                         </div>
 

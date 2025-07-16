@@ -6,11 +6,9 @@
         <div class="product-inner__slider">
             <div class="product-inner__slider-inner">
                 <div class="swiper-wrapper">
-                    @foreach($product->productImages as $image)
-                    <div class="product-inner__slider-item swiper-slide">
-                        <img src="{{ asset('images/'.$image->img) }}" alt="">
+                    <div class="product-card__img">
+                        <img src="{{ asset($product->main_img) }}" alt="">
                     </div>
-                    @endforeach
 {{--                    <div class="product-inner__slider-item swiper-slide">--}}
 {{--                        <img src="{{ asset('images/product-inner-2.jpg') }}" alt="">--}}
 {{--                    </div>--}}
@@ -18,16 +16,16 @@
 {{--                        <img src="{{ asset('images/product-inner-2.jpg') }}" alt="">--}}
 {{--                    </div>--}}
                 </div>
-                <div class="product-inner__slider-button-next">
-                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M0.503906 0.569946L6.93391 6.99995L0.503906 13.4299" stroke="#050505" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                <div class="product-inner__slider-button-prev">
-                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M7.49597 0.569946L1.06597 6.99995L7.49597 13.4299" stroke="#050505" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
+{{--                <div class="product-inner__slider-button-next">--}}
+{{--                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">--}}
+{{--                        <path d="M0.503906 0.569946L6.93391 6.99995L0.503906 13.4299" stroke="#050505" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>--}}
+{{--                    </svg>--}}
+{{--                </div>--}}
+{{--                <div class="product-inner__slider-button-prev">--}}
+{{--                    <svg width="8" height="14" viewBox="0 0 8 14" fill="none" xmlns="http://www.w3.org/2000/svg">--}}
+{{--                        <path d="M7.49597 0.569946L1.06597 6.99995L7.49597 13.4299" stroke="#050505" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>--}}
+{{--                    </svg>--}}
+{{--                </div>--}}
             </div>
         </div>
 
