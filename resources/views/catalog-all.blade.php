@@ -21,6 +21,7 @@
                                 <div class="catalog-card__top-left">
                                     <p class="catalog-card__subtitle">{{ translation('products') }}</p>
                                     <p class="catalog-card__title ro-bold">{{ isset($item->title[$lang]) ? $item->title[$lang] : $item->title['ru'] }}</p>
+                                    <p class="catalog-card__title ro-bold">{{ isset($item->desc[$lang]) ? $item->desc[$lang] : $item->desc['ru'] }}</p>
 
                                 </div>
                                 <div class="catalo-card__logo">
@@ -100,6 +101,7 @@
                                     <img src="{{ asset($product->main_img) }}" alt="">
                                 </div>
                                 <p class="product-card__title ro-bold">{{ isset($product->title[$lang]) ? $product->title[$lang] : $product->title['ru'] }}</p>
+                                <p class="product-card__title ro-bold">{{ isset($product->desc[$lang]) ? $product->desc[$lang] : $product->desc['ru'] }}</p>
 
                             </a>
                         </div>

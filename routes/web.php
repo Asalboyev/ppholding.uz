@@ -25,7 +25,7 @@ use App\Http\Controllers\PostController;
 */
 
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale(), 'middleware' => 'locale'], function(){
-    Route::get('/', [WebController::class, 'index'])->name('index');
+    Route::get('/', [WecbController::class, 'index'])->name('index');
     Route::get('/about', [WebController::class, 'about'])->name('about');
     Route::get('/catalog', [WebController::class, 'catalog'])->name('catalog');
     Route::get('/catalog/{id}', [WebController::class, 'catalogInner'])->name('catalog-inner');
