@@ -87,15 +87,13 @@ class WebController extends Controller
         $translations = Translation::all();
         $lang = \App::getLocale();
 
-        // Mahsulotlar - 'order' ustunini DECIMAL sifatida to'g'ri tartiblash
+        // Mahsulotlar - order ustuni nuqta bo‘yicha ajratib, har ikkisini raqam sifatida sortlash
         $products = Product::where('catalog_id', $catalog->id)
             ->whereNotNull('order')
-            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", 1) AS UNSIGNED) ASC')
-            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", -1) AS DECIMAL(10,3)) ASC')
-            ->paginate(9);
+            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", 1) AS UNSIGNED) ASC')  // category qismi
+            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", -1) AS UNSIGNED) ASC') // product qismi
+            ->get();  // paginate emas, hammasini olib keladi
 
-
-        // Umumiy mahsulotlar soni
         $products_count = $catalog->products()->count();
 
         return view('catalog-inner', compact(
