@@ -101,7 +101,7 @@
                                     <img src="{{ asset($product->main_img) }}" alt="">
                                 </div>
                                 <p class="product-card__title ro-bold">{{ isset($product->title[$lang]) ? $product->title[$lang] : $product->title['ru'] }}</p>
-                                <p class="product-card__title ro-bold">{{ isset($product->desc[$lang]) ? $product->desc[$lang] : $product->desc['ru'] }}</p>
+                                <p class="product-card__title ro-bold">{!!   isset($product->desc[$lang]) ? $product->desc[$lang] : $product->desc['ru'] !!}</p>
 
                             </a>
                         </div>
