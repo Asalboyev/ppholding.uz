@@ -82,8 +82,9 @@ class WebController extends Controller
 
         $all = Catalog::orderBy('id', 'desc')->get()->except($id);
         $langs = Lang::all();
+
         $products = Product::where('catalog_id', $catalog->id)
-            ->orderByRaw('ISNULL(`order`), `order` ASC')
+            ->orderByRaw('CAST(`order` AS DECIMAL(10,2)) ASC')
             ->paginate(9);
 
         $translations = Translation::all();
