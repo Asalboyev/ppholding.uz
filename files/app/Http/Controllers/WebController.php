@@ -83,17 +83,17 @@ class WebController extends Controller
 
         $all = Catalog::orderBy('id', 'desc')->get()->except($id);
         $langs = Lang::all();
-
         $translations = Translation::all();
         $lang = \App::getLocale();
 
-        // Mahsulotlar - 'order' ustunini DECIMAL sifatida to'g'ri tartiblash
         $products = Product::where('catalog_id', $catalog->id)
-            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", 1) AS UNSIGNED) ASC')  // category part
-            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", -1) AS DECIMAL(10,3)) ASC') // product order part
+            ->orderByRaw('
+            CASE WHEN `order` IS NULL THEN 1 ELSE 0 END ASC,
+            CAST(SUBSTRING_INDEX(`order`, ".", 1) AS UNSIGNED) ASC,
+            CAST(SUBSTRING_INDEX(`order`, ".", -1) AS UNSIGNED) ASC
+        ')
             ->paginate(9);
 
-        // Umumiy mahsulotlar soni
         $products_count = $catalog->products()->count();
 
         return view('catalog-inner', compact(
@@ -107,6 +107,7 @@ class WebController extends Controller
             'catalog_for_footer'
         ));
     }
+
 
     public function catalogAll($id) {
         $catalog_for_footer = Catalog::take(5)->get();
@@ -178,7 +179,12 @@ class WebController extends Controller
         $translations = Translation::all();
         $lang = \App::getLocale();
         $product = Product::find($id);
-        $other = Product::all()->except($id);
+
+        $other = Product::where('catalog_id', $product->catalog_id)
+            ->where('id', '!=', $id)
+            ->orderBy('order', 'asc')
+            ->get();
+
         return view('product', compact([
             'langs',
             'translations',
@@ -188,6 +194,7 @@ class WebController extends Controller
             'catalog_for_footer',
         ]));
     }
+
 
     public function contacts() {
         $langs = Lang::all();
@@ -251,30 +258,16 @@ class WebController extends Controller
 
         $application->save();
 
-        if (isset($application->cv)) {
-            Mail::send('mail', [
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone_number' => $request->phone_number,
-                'cv' => asset($application->cv)
-            ], function($message) {
-                $message->to('licko37225021@gmail.com', 'to text')->subject('Запрос с сайта PPh');
-                $message->from('shohijahonaxmetov@gmail.com', 'Сайт PPh');
-            });
-        } else {
-            Mail::send('mail', [
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone_number' => $request->phone_number
-            ], function($message) {
-                $message->to('licko37225021@gmail.com', 'to text')->subject('Запрос с сайта PPh');
-                $message->from('shohijahonaxmetov@gmail.com', 'Сайт PPh');
-            });
-        }
+        Mail::send('mail', [
+            'name' => $request->name,
+            'email' => $request->email,
+            'phone_number' => $request->phone_number
+        ], function ($message) {
+            $message->to('info@ppholding.uz', 'to text')->subject('Запрос с сайта PPH');
+            $message->from('info@ppholding.uz', 'Сайт ppholding.uz');
+        });
 
-
-
-        return back()->with(['message' => 'Application has been sent!']);
+        return redirect()->back()->with(['message' => 'Ваша заявка отправлена']);
     }
 
     public function uploadImage(Request $request) {
@@ -292,4 +285,22 @@ class WebController extends Controller
             echo $response;
         }
     }
+
+    public function catalogCapsules($type) {
+        $langs = Lang::all();
+        $translations = Translation::all();
+        $lang = \App::getLocale();
+        $all = Catalog::orderBy('id', 'desc')->get()->except(4);
+        $catalog_for_footer = Catalog::take(5)->get();
+
+        $products = Product::where('catalog_id', 4)
+            ->where('type', $type)
+            ->orderBy('order', 'asc')
+            ->get();
+
+        $catalog = Catalog::find(4);
+
+        return view('capsules', compact('all', 'catalog', 'langs', 'lang', 'translations', 'catalog_for_footer', 'products'));
+    }
+
 }

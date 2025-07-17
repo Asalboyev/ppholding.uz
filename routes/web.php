@@ -12,20 +12,16 @@ use App\Http\Controllers\SertificateController;
 use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\PhotoController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\AboutPageController;
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
 */
 
 Route::group(['prefix' => App\Http\Middleware\LocaleMiddleware::getLocale(), 'middleware' => 'locale'], function(){
-    Route::get('/', [WecbController::class, 'index'])->name('index');
+    Route::get('/', [WebController::class, 'index'])->name('index');
     Route::get('/about', [WebController::class, 'about'])->name('about');
     Route::get('/catalog', [WebController::class, 'catalog'])->name('catalog');
     Route::get('/catalog/{id}', [WebController::class, 'catalogInner'])->name('catalog-inner');
@@ -55,41 +51,33 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
     Route::resource('partners', PartnerController::class);
     Route::resource('photos', PhotoController::class);
     Route::resource('news', PostController::class);
-    Route::get('about', [\App\Http\Controllers\AboutPageController::class, 'index'])->name('about.index');
-//    Route::post('about/store', [\App\Http\Controllers\AboutPageController::class, 'store'])->name('about.store');
-    Route::post('about/update/{id}', [\App\Http\Controllers\AboutPageController::class, 'update'])->name('about.update');
+
+    Route::get('about', [AboutPageController::class, 'index'])->name('about.index');
+    Route::post('about/update/{id}', [AboutPageController::class, 'update'])->name('about.update');
 });
 
 Auth::routes();
 
-Route::get('/admin', [App\Http\Controllers\HomeController::class, 'index'])->name('admin');
+Route::get('/admin', [HomeController::class, 'index'])->name('admin');
 
-//Переключение языков
+// Language switching
 Route::get('setlocale/{lang}', function ($lang) {
-    $referer = Redirect::back()->getTargetUrl(); //URL предыдущей страницы
-    $parse_url = parse_url($referer, PHP_URL_PATH); //URI предыдущей страницы
-
-    //разбиваем на массив по разделителю
+    $referer = Redirect::back()->getTargetUrl();
+    $parse_url = parse_url($referer, PHP_URL_PATH);
     $segments = explode('/', $parse_url);
 
-    //Если URL (где нажали на переключение языка) содержал корректную метку языка
     if (in_array($segments[1], App\Http\Middleware\LocaleMiddleware::$languages)) {
-
-        unset($segments[1]); //удаляем метку
+        unset($segments[1]);
     }
 
-    //Добавляем метку языка в URL (если выбран не язык по-умолчанию)
     if ($lang != App\Http\Middleware\LocaleMiddleware::$mainLanguage){
         array_splice($segments, 1, 0, $lang);
     }
 
-    //формируем полный URL
-    $url = Request::root().implode("/", $segments);
+    $url = Request::root() . implode("/", $segments);
 
-    //если были еще GET-параметры - добавляем их
     if(parse_url($referer, PHP_URL_QUERY)){
-        $url = $url.'?'. parse_url($referer, PHP_URL_QUERY);
+        $url .= '?' . parse_url($referer, PHP_URL_QUERY);
     }
-    return redirect($url); //Перенаправляем назад на ту же страницу
-
+    return redirect($url);
 })->name('setlocale');
