@@ -140,12 +140,12 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-       // dd($request);
         $request->validate([
             'title.ru' => 'required',
             'desc.ru' => 'required',
             'catalog' => 'required|numeric',
-            'vendor_code' => 'required'
+            'vendor_code' => 'required',
+            'order' => 'required|numeric',
         ]);
 
         $data = $request->all();
@@ -153,15 +153,18 @@ class ProductController extends Controller
         try {
             DB::beginTransaction();
 
-            $product = Product::find($id);
+            $product = Product::findOrFail($id);
 
             $product->title = $data['title'];
             $product->desc = $data['desc'];
             $product->catalog_id = intval($data['catalog']);
             $product->vendor_code = $data['vendor_code'];
-            // if(isset($request->type)) {
-                $product->type = $request->type;
-            // }
+            $product->type = $request->type ?? null;
+
+            // Orderni category_id.order formatida birlashtirish
+            $categoryId = intval($data['catalog']);
+            $orderNumber = intval($data['order']);
+            $product->order = "{$categoryId}.{$orderNumber}";
 
             if(isset($data['img'])) {
                 $path = $request->file('img')->store('upload/images', 'public');
@@ -170,21 +173,15 @@ class ProductController extends Controller
 
             $product->save();
 
+            // Existing product imagesni yangilash
             if (isset($data['images_hidden'])) {
 
-                $old_photos = ProductImage::where('product_id', $product->id)->get();
-
-                if (!is_null($old_photos)) {
-                    ProductImage::where('product_id', $product->id)->delete();
-                }
+                ProductImage::where('product_id', $product->id)->delete();
 
                 foreach ($data['images_hidden'] as $item) {
-
                     $image = new ProductImage;
-
                     $image->img = $item;
                     $image->product_id = $product->id;
-
                     $image->save();
                 }
             }
@@ -192,10 +189,10 @@ class ProductController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('products.index')->with(['error' => $e]);
+            return redirect()->route('products.index')->with(['error' => $e->getMessage()]);
         }
 
-        return redirect()->route('products.index')->with(['message' => 'Successfully updates!']);
+        return redirect()->route('products.index')->with(['message' => 'Successfully updated!']);
     }
 
     /**
