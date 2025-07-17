@@ -161,10 +161,13 @@ class ProductController extends Controller
             $product->vendor_code = $data['vendor_code'];
             $product->type = $request->type ?? null;
 
-            // Orderni category_id.order formatida birlashtirish
+            // Category ID va Order number birlashtirib, 3 kasr aniqlik bilan saqlash
             $categoryId = intval($data['catalog']);
             $orderNumber = intval($data['order']);
-            $product->order = "{$categoryId}.{$orderNumber}";
+
+            // order format: category_id + order_number/1000, eg: 2.105
+            $formattedOrder = number_format($categoryId + ($orderNumber / 1000), 3, '.', '');
+            $product->order = $formattedOrder;
 
             if(isset($data['img'])) {
                 $path = $request->file('img')->store('upload/images', 'public');
@@ -173,9 +176,8 @@ class ProductController extends Controller
 
             $product->save();
 
-            // Existing product imagesni yangilash
+            // Existing images update
             if (isset($data['images_hidden'])) {
-
                 ProductImage::where('product_id', $product->id)->delete();
 
                 foreach ($data['images_hidden'] as $item) {

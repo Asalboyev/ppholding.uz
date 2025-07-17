@@ -72,7 +72,8 @@ class WebController extends Controller
         ]));
     }
 
-    public function catalogInner($id) {
+    public function catalogInner($id)
+    {
         $catalog_for_footer = Catalog::take(5)->get();
         $catalog = Catalog::find($id);
 
@@ -83,16 +84,18 @@ class WebController extends Controller
         $all = Catalog::orderBy('id', 'desc')->get()->except($id);
         $langs = Lang::all();
 
-        // ORDER ni raqam sifatida to'g'ri tartiblash
+        $translations = Translation::all();
+        $lang = \App::getLocale();
+
+        // Mahsulotlar - 'order' ustunini DECIMAL sifatida to'g'ri tartiblash
         $products = Product::where('catalog_id', $catalog->id)
             ->orderByRaw('ISNULL(`order`), CAST(`order` AS DECIMAL(10,5)) ASC')
             ->paginate(9);
 
-        $translations = Translation::all();
-        $lang = \App::getLocale();
-        $products_count = count($catalog->products) >= 9 ? 9 : count($catalog->products);
+        // Umumiy mahsulotlar soni
+        $products_count = $catalog->products()->count();
 
-        return view('catalog-inner', compact([
+        return view('catalog-inner', compact(
             'langs',
             'translations',
             'lang',
@@ -100,8 +103,8 @@ class WebController extends Controller
             'all',
             'products',
             'products_count',
-            'catalog_for_footer',
-        ]));
+            'catalog_for_footer'
+        ));
     }
 
 
