@@ -92,7 +92,7 @@ class WebController extends Controller
             ->whereNotNull('order')
             ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", 1) AS UNSIGNED) ASC')  // category qismi
             ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", -1) AS UNSIGNED) ASC') // product qismi
-            ->get();  // paginate emas, hammasini olib keladi
+            ->paginate(9);  // paginate emas, hammasini olib keladi
 
         $products_count = $catalog->products()->count();
 
