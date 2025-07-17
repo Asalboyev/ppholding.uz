@@ -89,9 +89,11 @@ class WebController extends Controller
 
         // Mahsulotlar - 'order' ustunini DECIMAL sifatida to'g'ri tartiblash
         $products = Product::where('catalog_id', $catalog->id)
-            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", 1) AS UNSIGNED) ASC')  // category part
-            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", -1) AS DECIMAL(10,3)) ASC') // product order part
+            ->whereNotNull('order')
+            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", 1) AS UNSIGNED) ASC')
+            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", -1) AS DECIMAL(10,3)) ASC')
             ->paginate(9);
+
 
         // Umumiy mahsulotlar soni
         $products_count = $catalog->products()->count();
