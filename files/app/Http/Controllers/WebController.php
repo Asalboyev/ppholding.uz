@@ -74,13 +74,19 @@ class WebController extends Controller
 
     public function catalogInner($id) {
         $catalog_for_footer = Catalog::take(5)->get();
-        $catalog = Catalog::find($id);
+        $catalog = Catalog::findOrFail($id);
         $all = Catalog::orderBy('id', 'desc')->get()->except($id);
         $langs = Lang::all();
-        $products = Product::where('catalog_id', $catalog->id)->paginate(9);
+
+        // productlarni order bo‘yicha saralash
+        $products = Product::where('catalog_id', $catalog->id)
+            ->orderBy('order', 'asc')
+            ->paginate(9);
+
         $translations = Translation::all();
         $lang = \App::getLocale();
         $products_count = count($catalog->products) >= 9 ? 9 : count($catalog->products);
+
         return view('catalog-inner', compact([
             'langs',
             'translations',

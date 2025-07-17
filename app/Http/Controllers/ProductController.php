@@ -49,15 +49,13 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-//        $data = $request->all();
-//        dd($data);
         $request->validate([
             'title.ru' => 'required',
             'desc.ru' => 'required',
             'catalog' => 'required|numeric',
             'vendor_code' => 'required',
             'img' => 'required',
-            'order' => 'required',
+            'order' => 'required|numeric',
         ]);
 
         $data = $request->all();
@@ -71,10 +69,13 @@ class ProductController extends Controller
             $product->desc = $data['desc'];
             $product->catalog_id = intval($data['catalog']);
             $product->vendor_code = $data['vendor_code'];
-            $product->order = $data['order'];
-            // if(isset($request->type)) {
-                $product->type = $request->type;
-            // }
+
+            // Category id va order ni birlashtirish: category_id.order formatida
+            $categoryId = intval($data['catalog']);
+            $orderNumber = intval($data['order']);
+            $product->order = "{$categoryId}.{$orderNumber}";
+
+            $product->type = $request->type ?? null;
 
             if(isset($data['img'])) {
                 $path = $request->file('img')->store('upload/images', 'public');
@@ -84,14 +85,10 @@ class ProductController extends Controller
             $product->save();
 
             if (isset($data['images_hidden'])) {
-
                 foreach ($data['images_hidden'] as $item) {
-
                     $image = new ProductImage;
-
                     $image->img = $item;
                     $image->product_id = $product->id;
-
                     $image->save();
                 }
             }
@@ -99,7 +96,7 @@ class ProductController extends Controller
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->route('products.index')->with(['error' => $e]);
+            return redirect()->route('products.index')->with(['error' => $e->getMessage()]);
         }
 
         return redirect()->route('products.index')->with(['message' => 'Successfully added!']);
