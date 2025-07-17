@@ -21,7 +21,6 @@
                                 <div class="catalog-card__top-left">
                                     <p class="catalog-card__subtitle">{{ translation('products') }}</p>
                                     <p class="catalog-card__title ro-bold">{{ isset($item->title[$lang]) ? $item->title[$lang] : $item->title['ru'] }}</p>
-                                    <p class="catalog-card__title ro-bold">{{ isset($item->desc[$lang]) ? $item->desc[$lang] : $item->desc['ru'] }}</p>
 
                                 </div>
                                 <div class="catalo-card__logo">
