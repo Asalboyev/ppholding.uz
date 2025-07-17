@@ -83,16 +83,16 @@ class WebController extends Controller
 
         $all = Catalog::orderBy('id', 'desc')->get()->except($id);
         $langs = Lang::all();
-
         $translations = Translation::all();
         $lang = \App::getLocale();
 
-        // Mahsulotlar - order ustuni nuqta bo‘yicha ajratib, har ikkisini raqam sifatida sortlash
         $products = Product::where('catalog_id', $catalog->id)
-            ->whereNotNull('order')
-            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", 1) AS UNSIGNED) ASC')  // category qismi
-            ->orderByRaw('CAST(SUBSTRING_INDEX(`order`, ".", -1) AS UNSIGNED) ASC') // product qismi
-            ->paginate(9);  // paginate emas, hammasini olib keladi
+            ->orderByRaw('
+            CASE WHEN `order` IS NULL THEN 1 ELSE 0 END ASC,
+            CAST(SUBSTRING_INDEX(`order`, ".", 1) AS UNSIGNED) ASC,
+            CAST(SUBSTRING_INDEX(`order`, ".", -1) AS UNSIGNED) ASC
+        ')
+            ->paginate(9);
 
         $products_count = $catalog->products()->count();
 
