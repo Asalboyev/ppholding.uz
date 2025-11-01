@@ -7,9 +7,9 @@
             <div class="container">
                 <div class="top__inner">
                     <h1 class="top__title ro-bold">{{ translation('navbar.gallery') }}</h1>
-                    <a href="#" class="top__logo">
-                        <img src="{{ asset('images/logo.png') }}" alt="">
-                    </a>
+{{--                    <a href="#" class="top__logo">--}}
+{{--                        <img src="{{ asset('images/logo.png') }}" alt="">--}}
+{{--                    </a>--}}
                 </div>
             </div>
         </div>
