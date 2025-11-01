@@ -33,7 +33,7 @@
             <div class="container">
                 <div class="about__inner">
                     <div class="about__logo">
-                        <img src="{{ asset('images/logo-black.png') }}" alt="">
+                        <img style="height: 100px" src="{{ asset('images/logo-black.png') }}" alt="">
                     </div>
                     <div class="about__info">
                         <p>{{ translation('index.desc') }}</p>
