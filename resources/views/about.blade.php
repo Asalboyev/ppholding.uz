@@ -31,14 +31,14 @@
                 <div class="top__inner" style="padding: 60px 0;margin-bottom: 0">
                     <h1 class="top__title ro-bold">{{ translation('about_company') }}</h1>
                     <a href="#" class="top__logo">
-                        <img src="{{ asset('images/logo.png') }}" alt="">
+                        <img style="height: 120px; margin-top: 3rem " src="{{ asset('images/logo.png') }}" alt="">
                     </a>
                 </div>
                 <p class="text--gray">{!! isset($about->desc1[$lang]) ? $about->desc1[$lang] : $about->desc1['ru'] !!}</p>
             </div>
         </div>
 
-      
+
         <div class="container">
             <p class="text--gray">{!! isset($about->desc2[$lang]) ? $about->desc2[$lang] : $about->desc2['ru'] !!}</p>
         </div>

@@ -7,9 +7,9 @@
             <div class="container">
                 <div class="main-section__inner">
                     <div class="main-section__info">
-                        <div class="main-section__logo">
-                            <img src="{{ asset('images/logo-white.png') }}" alt="">
-                        </div>
+{{--                        <div class="main-section__logo">--}}
+{{--                            <img src="{{ asset('images/logo-white.png') }}" alt="">--}}
+{{--                        </div>--}}
                         <h1 class="main-section__title ro-bold">{{ translation('index.title') }}</h1>
                         <p class="main-section__subtitle ro-bold">{{ translation('index.subtitle') }}</p>
                         <div class="main-section__bottom">
