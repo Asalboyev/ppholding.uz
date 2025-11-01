@@ -101,7 +101,7 @@
             <div class="footer__inner">
                 <div class="footer__left">
                     <a href="#" class="footer__logo">
-                        <img src="{{ asset('images/logo.png') }}" alt="">
+                        <img style="width: 100px; height: 200;"  src="{{ asset('images/logo.png') }}" alt="">
                     </a>
                     <p class="footer__left-text ir-regular">{{ translation('footer.subtitle') }}</p>
                 </div>

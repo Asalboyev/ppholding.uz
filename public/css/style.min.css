@@ -1201,6 +1201,8 @@ a {
 .header__logo img {
   display: block;
   max-width: 100%;
+    width: 90px;
+    height: 197;
 }
 .header__burger {
   display: none;
@@ -1280,6 +1282,7 @@ a {
 .footer__logo {
   display: block;
   margin-bottom: 20px;
+
 }
 .footer__menu {
   display: -webkit-box;
